@@ -54,7 +54,7 @@ public class ResponseBodyTraverseSupportReturnValueHandler implements HandlerMet
         boolean isResponseEntity = returnValue instanceof ResponseEntity;
         ResponseEntity<? extends TraverseSupport<?, ?>> responseEntity = isResponseEntity ? (ResponseEntity<? extends TraverseSupport<?, ?>>) returnValue : null;
         TraverseSupport<?, ?> traverseSupport = isResponseEntity ? responseEntity.getBody() : (TraverseSupport<?, ?>) returnValue;
-        this.emitterReturnValueHandler.handleReturnValue(traverseSupport == null ? null : isResponseEntity
+        emitterReturnValueHandler.handleReturnValue(traverseSupport == null ? null : isResponseEntity
                         ? new ResponseEntity<>(emitter, responseEntity.getHeaders(), responseEntity.getStatusCode())
                         : emitter, returnType, mavContainer, webRequest);
         if (traverseSupport != null) newSingleThreadExecutor().execute(() -> {

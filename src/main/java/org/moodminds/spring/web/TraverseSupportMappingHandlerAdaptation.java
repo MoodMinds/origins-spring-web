@@ -34,7 +34,7 @@ public class TraverseSupportMappingHandlerAdaptation implements InitializingBean
      */
     @Override
     public void afterPropertiesSet() {
-        ofNullable(this.requestMappingHandlerAdapter.getReturnValueHandlers()).ifPresent(handlers -> handlers.stream()
+        ofNullable(requestMappingHandlerAdapter.getReturnValueHandlers()).ifPresent(handlers -> handlers.stream()
                 .filter(h -> h instanceof ResponseBodyEmitterReturnValueHandler)
                 .map(h -> (ResponseBodyEmitterReturnValueHandler) h)
                 .findFirst().ifPresent(emitterHandler -> {

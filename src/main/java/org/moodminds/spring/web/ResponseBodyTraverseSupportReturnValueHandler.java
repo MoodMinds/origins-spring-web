@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static org.moodminds.util.Cast.cast;
 import static org.springframework.core.ResolvableType.forMethodParameter;
 
 /**
@@ -48,11 +49,10 @@ public class ResponseBodyTraverseSupportReturnValueHandler implements HandlerMet
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void handleReturnValue(Object returnValue, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
         ResponseBodyEmitter emitter = new SseEmitter();
         boolean isResponseEntity = returnValue instanceof ResponseEntity;
-        ResponseEntity<? extends TraverseSupport<?, ?>> responseEntity = isResponseEntity ? (ResponseEntity<? extends TraverseSupport<?, ?>>) returnValue : null;
+        ResponseEntity<? extends TraverseSupport<?, ?>> responseEntity = isResponseEntity ? cast(returnValue) : null;
         TraverseSupport<?, ?> traverseSupport = isResponseEntity ? responseEntity.getBody() : (TraverseSupport<?, ?>) returnValue;
         emitterReturnValueHandler.handleReturnValue(traverseSupport == null ? null : isResponseEntity
                         ? new ResponseEntity<>(emitter, responseEntity.getHeaders(), responseEntity.getStatusCode())
